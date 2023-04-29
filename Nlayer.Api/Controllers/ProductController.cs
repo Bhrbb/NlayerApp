@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Nlayer.Api.Filters;
 using Nlayer.Core.Dtos;
 using Nlayer.Core.Models;
 using Nlayer.Core.Services;
@@ -11,20 +12,20 @@ namespace Nlayer.Api.Controllers
     public class ProductController : CustomBaseController
     {
         private readonly IMapper _mapper;
-        private readonly IService<ProductEntity> _services;
-        private readonly IProductService _productservice;
-        public ProductController(IMapper mapper, IService<ProductEntity> services, IProductService productservice)
+       // private readonly IService<ProductEntity> _services;
+        private readonly IProductService _services;
+        public ProductController(IMapper mapper, IProductService productservice)
         {
             _mapper = mapper;
-            _services = services;
-            _productservice = productservice;
+            // _services = services;
+            _services = productservice;
 
         }
         //get api /products/GetProductWithCategory
         [HttpGet("[action]")]
         public async Task<IActionResult> GetProductWithCategory()
         {
-            return CreateActionResult(await _productservice.GetProductWithCategory());
+            return CreateActionResult(await _services.GetProductWithCategory());
           
         }
 
@@ -37,6 +38,7 @@ namespace Nlayer.Api.Controllers
             // return Ok(CustomResponseDto<List<ProductDto>>.Succes(200, productDtos));
             return CreateActionResult(CustomResponseDto<List<ProductDto>>.Succes(200, productDtos));
         }
+        [ServiceFilter(typeof(NotFoundFilter<ProductEntity>))]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
