@@ -4,11 +4,6 @@ using Nlayer.Core.IUnitOfWork;
 using Nlayer.Core.Models;
 using Nlayer.Core.Repositories;
 using Nlayer.Core.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Nlayer.Service.Services
 {
@@ -18,7 +13,7 @@ namespace Nlayer.Service.Services
         private readonly IMapper _mapper;
 
 
-        public CategoryService(IGenericRepository<CategoryEntity> repository, IUnitOFWork unitOfWork, ICategoryRepository categoryrepository,IMapper mapper) : base(repository, unitOfWork)
+        public CategoryService(IGenericRepository<CategoryEntity> repository, IUnitOFWork unitOfWork, ICategoryRepository categoryrepository, IMapper mapper) : base(repository, unitOfWork)
         {
             _categoryrepository = categoryrepository;
             _mapper = mapper;
@@ -27,7 +22,7 @@ namespace Nlayer.Service.Services
         public async Task<CustomResponseDto<CategoryWithProductsDto>> GetSingleCategoryByIdWithProductsAsync(int categoryid)
         {
             var category = await _categoryrepository.GetSingleCategoryByIdWithProductsAsync(categoryid);
-            var categoryDto=_mapper.Map<CategoryWithProductsDto>(category);
+            var categoryDto = _mapper.Map<CategoryWithProductsDto>(category);
             return CustomResponseDto<CategoryWithProductsDto>.Succes(200, categoryDto);
 
         }

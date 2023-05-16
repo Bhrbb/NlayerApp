@@ -1,12 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Nlayer.Core.Models;
 using Nlayer.Core.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Data.SqlTypes;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Nlayer.Repository.Repositories
 {
@@ -17,9 +11,9 @@ namespace Nlayer.Repository.Repositories
         }
 
         public async Task<List<ProductEntity>> GetProductWithCategory()
-        { 
+        {
             //eager loding
-            return await _context.Products.Include(x=>x.Category).ToListAsync();
+            return await _context.Products.Include(x => x.Category).ToListAsync();
         }
     }
 }

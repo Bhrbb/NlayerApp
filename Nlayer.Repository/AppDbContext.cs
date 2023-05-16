@@ -1,25 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Nlayer.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Nlayer.Repository
 {
-    public class AppDbContext:DbContext
+    public class AppDbContext : DbContext
     {
-        public AppDbContext(DbContextOptions<AppDbContext>options):base(options) 
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
 
         }
         public DbSet<CategoryEntity> Categories { get; set; }
         public DbSet<ProductEntity> Products { get; set; }
-         public DbSet<ProductFeature> ProductFeatures { get; set; }
+        public DbSet<ProductFeature> ProductFeatures { get; set; }
 
-         protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
             //modelBuilder.Entity<ProductFeature>().HasData(new ProductFeature()
@@ -40,7 +35,7 @@ namespace Nlayer.Repository
 
             base.OnModelCreating(modelBuilder);
 
-          
+
         }
     }
 }
