@@ -1,25 +1,77 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Nlayer.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Nlayer.Repository
 {
-    public class AppDbContext:DbContext
+    public class AppDbContext : DbContext
     {
-        public AppDbContext(DbContextOptions<AppDbContext>options):base(options) 
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
 
         }
         public DbSet<CategoryEntity> Categories { get; set; }
         public DbSet<ProductEntity> Products { get; set; }
-         public DbSet<ProductFeature> ProductFeatures { get; set; }
+        public DbSet<ProductFeature> ProductFeatures { get; set; }
 
-         protected override void OnModelCreating(ModelBuilder modelBuilder)
+        public override int SaveChanges()
+        {
+            foreach (var item in ChangeTracker.Entries())
+            {
+                if (item.Entity is BaseEntity entityReferance)
+                {
+                    switch (item.State)
+                    {
+                        case EntityState.Added:
+                            {
+                                entityReferance.CreatedDate = DateTime.Now;
+                                break;
+                            }
+                        case EntityState.Modified:
+                            {
+                                Entry(entityReferance).Property(x => x.CreatedDate).IsModified = false;
+                                entityReferance.UpdatedDate = DateTime.Now;
+                                break;
+                            }
+
+
+                    }
+                }
+            }
+            return base.SaveChanges();
+        }
+        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
+        {
+
+            foreach (var item in ChangeTracker.Entries())
+            {
+                if (item.Entity is BaseEntity entityReferance)
+                {
+                    switch (item.State)
+                    {
+                        case EntityState.Added:
+                            {
+                                entityReferance.CreatedDate = DateTime.Now;
+                                break;
+                            }
+                        case EntityState.Modified:
+                            {
+                                entityReferance.UpdatedDate = DateTime.Now;
+                                break;
+                            }
+                            
+
+                    }
+                }
+            }
+
+
+
+
+
+            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+        }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
             //modelBuilder.Entity<ProductFeature>().HasData(new ProductFeature()
@@ -40,7 +92,7 @@ namespace Nlayer.Repository
 
             base.OnModelCreating(modelBuilder);
 
-          
+
         }
     }
 }

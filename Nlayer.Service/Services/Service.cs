@@ -3,12 +3,7 @@ using Nlayer.Core.IUnitOfWork;
 using Nlayer.Core.Repositories;
 using Nlayer.Core.Services;
 using Nlayer.Service.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Nlayer.Service.Services
 {
@@ -39,10 +34,10 @@ namespace Nlayer.Service.Services
 
         }
 
-        public  async Task<bool> AnyAsync(Expression<Func<T, bool>> expression)
+        public async Task<bool> AnyAsync(Expression<Func<T, bool>> expression)
         {
-           return await _repository.AnyAsync(expression);
-           
+            return await _repository.AnyAsync(expression);
+
 
         }
 
@@ -54,7 +49,7 @@ namespace Nlayer.Service.Services
         public async Task<T> GetByIdAsync(int id)
         {
             var hasProduct = await _repository.GetByIdAsync(id);
-            if (hasProduct==null)
+            if (hasProduct == null)
             {
                 throw new ClientSideExceptions($"{typeof(T).Name} (id) not found!");
             }
