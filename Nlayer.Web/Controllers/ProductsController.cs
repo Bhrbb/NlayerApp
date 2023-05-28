@@ -62,6 +62,7 @@ namespace Nlayer.Web.Controllers
             ViewBag.categories = new SelectList(categories, "Id", "Name");
             return View();
         }
+        [ServiceFilter(typeof(NotFoundFilter<ProductEntity>))]
         public async Task<IActionResult> Update(int id)
         {
             var product=await _productApiService.GetByIdAsync(id);
@@ -87,7 +88,9 @@ namespace Nlayer.Web.Controllers
         }
         public async Task<IActionResult> Remove(int id)
         {
+
             await _productApiService.RemoveAsync(id);
+
             return RedirectToAction(nameof(Index));
 
         }
