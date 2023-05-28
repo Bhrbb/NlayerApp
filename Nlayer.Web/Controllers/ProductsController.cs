@@ -51,6 +51,7 @@ namespace Nlayer.Web.Controllers
             ViewBag.categories = new SelectList(categoriesDto, "Id", "Name");
             return View();
         }
+        [ServiceFilter(typeof(NotFoundFilter<ProductEntity>))]
         public async Task<IActionResult> Update(int id)
         {
             var product=await _productService.GetByIdAsync(id);
@@ -72,6 +73,13 @@ namespace Nlayer.Web.Controllers
             var categoriesDto = _mapper.Map<List<CategoryDto>>(categories.ToList());
             ViewBag.categories = new SelectList(categoriesDto, "Id", "Name",productDto.CategoryId);
             return View(productDto);
+
+        }
+        public async Task<IActionResult> Remove(int id)
+        {
+            var product= await _productService.GetByIdAsync(id);
+            await _productService.RemoveAsync(product);
+            return RedirectToAction(nameof(Index));
 
         }
     }

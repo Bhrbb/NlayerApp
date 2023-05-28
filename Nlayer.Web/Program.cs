@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Nlayer.Repository;
 using Nlayer.Service.Mapping;
 using Nlayer.Service.Validations;
+using Nlayer.Web;
 using Nlayer.Web.Modules;
 using System.Reflection;
 
@@ -20,11 +21,12 @@ builder.Services.AddDbContext<AppDbContext>(x =>
         option.MigrationsAssembly(Assembly.GetAssembly(typeof(AppDbContext)).GetName().Name);
     });
 });
+builder.Services.AddScoped(typeof(NotFoundFilter<>));
 builder.Services.AddAutoMapper(typeof(MapProfile));
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder => containerBuilder.RegisterModule(new RepoServiceModule()));
 var app = builder.Build();
-
+app.UseExceptionHandler("/Home/Error");
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
