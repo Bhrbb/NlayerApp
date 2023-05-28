@@ -36,7 +36,7 @@ namespace Nlayer.Api.Modules
            .AsImplementedInterfaces().InstancePerLifetimeScope();
 
 
-            builder.RegisterType<ProductServiceWithCaching>().As<IProductService>();
+           // builder.RegisterType<ProductServiceWithCaching>().As<IProductService>();
 
             //InstancePerLifetimeScope => Add.Scope//bir request baslayıp bitene kadar aynısıjnı kullan
 

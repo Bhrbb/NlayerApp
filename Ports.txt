@@ -1,0 +1,6 @@
+https://localhost:7263/ API PORTS
+
+
+http://localhost:5273 API PORTS
+https://localhost:7154/ WEB MVC
+http://localhost:5004 WEB MVC
